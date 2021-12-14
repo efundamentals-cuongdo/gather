@@ -1,0 +1,56 @@
+{
+  "generator-jhipster": {
+    "blueprints": [
+      {
+        "name": "generator-jhipster-nodejs",
+        "version": "2.0.0"
+      }
+    ],
+    "otherModules": [
+      {
+        "name": "generator-jhipster-nodejs",
+        "version": "2.0.0"
+      }
+    ],
+    "applicationType": "monolith",
+    "baseName": "gather",
+    "jhipsterVersion": "7.0.1",
+    "skipClient": true,
+    "skipServer": false,
+    "skipUserManagement": false,
+    "skipCheckLengthOfIdentifier": false,
+    "skipFakeData": false,
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "testFrameworks": [],
+    "pages": [],
+    "creationTimestamp": 1639460254050,
+    "serverPort": "8081",
+    "packageName": "com.jhipster.node",
+    "databaseType": "sql",
+    "devDatabaseType": "sqlite",
+    "prodDatabaseType": "mysql",
+    "authenticationType": "jwt",
+    "clientFramework": "no",
+    "enableTranslation": false,
+    "nativeLanguage": "en",
+    "packageFolder": "com/jhipster/node",
+    "jwtSecretKey": "ZDYwNTVmMjdhMjdjMDVhMWZkZTgwOGU4NzA4NGI0ODE4NzM0ZmEwNDJlMDViOWYxMjYxMDYwYjhiMjRjMTg1MmNmOWZlNWI5M2VhYjdlZWI3M2ExYjdhYmY4NmU4ZTA3M2Q2MmZiZWM1NTI5ZjU5NTExMDRmZWFjMDFiNGI4ZDY=",
+    "serviceDiscoveryType": false,
+    "websocket": false,
+    "searchEngine": false,
+    "messageBroker": false,
+    "clientPackageManager": "npm",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "withAdminUi": true,
+    "cacheProvider": "ehcache",
+    "buildTool": "maven",
+    "enableHibernateCache": true,
+    "reactive": false,
+    "languages": ["en", "fr"],
+    "lastLiquibaseTimestamp": 1639464374000,
+    "entities": ["Walmart"]
+  }
+}
