@@ -11,7 +11,8 @@
     "prettier:check": "prettier --check \"{,src/**/}*.{md,json,yml,html,java}\"",
     "prettier:format": "prettier --write \"{,src/**/}*.{md,json,yml,html,java}\"",
     "start:app": "cd server && npm run start",
-    "test": "echo \"INFO: no client test found\""
+    "test": "echo \"INFO: no client test found\"",
+    "start:debug": "nest start --debug --watch"
   },
   "dependencies": {
     "@codebrew/nestjs-storage": "^0.1.6",
