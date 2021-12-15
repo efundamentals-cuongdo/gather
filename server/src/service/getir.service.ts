@@ -5,7 +5,6 @@ import { GetirDTO } from './dto/getir.dto';
 import { GetirMapper } from './mapper/getir.mapper';
 import { GetirRepository } from '../repository/getir.repository';
 import { Getir } from '../domain/getir.entity';
-import { v4 as uuid } from 'uuid';
 import { FileService } from './file.service';
 import { HttpService } from '@nestjs/axios';
 
@@ -24,9 +23,7 @@ export class GetirService {
   ) { }
 
   async one(url: string): Promise<GetirDTO> {
-    //gather product
-    const body = { };
-
+    //gather to storage
     const headers = {
       'Content-Type': 'application/json; charset=utf-8;',
       'accept-version': '2.0.0',
@@ -43,12 +40,22 @@ export class GetirService {
     };
 
     const res = await this.httpService.get(url,{ headers }).toPromise();
-    this.logger.log('Product res: ', res.data);
-    //save product to file
+    this.logger.log('Product res: ', JSON.stringify(res.data.data));
+
+    const fileName = this.urlToProductId(url);
+    await this.store(['detail'], fileName, Buffer.from(JSON.stringify(res.data), 'utf-8'), '.json');
+    const imageUrls: string[] = res.data.data.product.picURLs;
+    await Promise.all(imageUrls.map(async imageUrl => {
+      const image = await this.httpService.get(imageUrl).toPromise();
+      this.store(['detail'], fileName, Buffer.from(image.data, 'binary'), this.fileService.getFileExtension(imageUrl));
+    }));
+
+    //extract (and save to database)
     const product = new Getir();
-    product.productNo = this.urlToProductId(url);
-    product.name = 'product 01';
-    await this.store(product.productNo, Buffer.from(JSON.stringify(res.data), 'utf-8'), 'json');
+    product.productNo = res.data.data.product.id;
+    product.name = res.data.data.product.name;
+    this.getirRepository.save(product);
+
     return GetirMapper.fromEntityToDTO(product);
   }
 
@@ -64,8 +71,8 @@ export class GetirService {
     return Buffer.from(url).toString('base64');
   }
 
-  private async store(fileName: string, content: Buffer, extension: string): Promise<string> {
-    const url = await this.fileService.store(RETAILER, fileName, extension, content);
+  private async store(directories: string[], fileName: string, content: Buffer, extension: string): Promise<string> {
+    const url = await this.fileService.store([RETAILER, ...directories], fileName, extension, content);
     return url;
   }
 
