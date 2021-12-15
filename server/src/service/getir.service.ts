@@ -51,6 +51,7 @@ export class GetirService {
 
     //extract (and save to database)
     const product = new Getir();
+    product.url = url;
     product.productNo = res.data.data.product.id;
     product.name = res.data.data.product.name;
     product.imageUrls = imageUrls;
