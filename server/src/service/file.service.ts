@@ -5,6 +5,7 @@ import path from 'path';
 
 @Injectable()
 export class FileService {
+
     logger = new Logger('FileService');
 
     async remove(directories: string[], fileName: string, extension: string = 'json'): Promise<string> {
@@ -22,11 +23,27 @@ export class FileService {
         const path = this.path(directories, uuid, extension);
         try {
             await fse.writeFile(path, content);
+            this.logger.log(`Stored ${path}`);
             return this.url(uuid, extension);
         } catch (err) {
             await fse.remove(path);
             throw err;
         }
+    }
+
+    async storeAsStream(directories: string[], fileName: string, extension: string, response: any): Promise<string> {
+        const path = this.path(directories, fileName, extension);
+        const writer = fse.createWriteStream(path);
+
+        response.data.pipe(writer);
+
+        writer.on('finish', () => {
+            this.logger.log(`Stored ${path}`);
+        });
+        writer.on('error', (err) => {
+            this.logger.error(err);
+        });
+        return path;
     }
 
     // getFileSize(size: number): number {

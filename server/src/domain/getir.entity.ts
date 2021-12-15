@@ -11,11 +11,17 @@ import { BaseEntity } from './base/base.entity';
 @Entity('getir')
 export class Getir extends BaseEntity  {
 
+    @Column({name: "url", nullable: true})
+    url: string;
+
     @Column({name: "product_no", nullable: true})
     productNo: string;
 
     @Column({name: "name", nullable: true})
     name: string;
+
+    // @Column({name: "image_urls", nullable: true})
+    imageUrls: string[];
 
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

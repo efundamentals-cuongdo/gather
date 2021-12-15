@@ -23,7 +23,7 @@ export class GetirService {
   ) { }
 
   async one(url: string): Promise<GetirDTO> {
-    //gather to storage
+    //gather
     const headers = {
       'Content-Type': 'application/json; charset=utf-8;',
       'accept-version': '2.0.0',
@@ -36,24 +36,24 @@ export class GetirService {
       'Accept-Encoding': 'gzip',
       'User-Agent': 'okhttp/3.14.9',
       'Accept': '*/*',
-
     };
+    const res = await this.httpService.get(url, { headers }).toPromise();
+    // this.logger.log('Product res: ', JSON.stringify(res.data.data));
 
-    const res = await this.httpService.get(url,{ headers }).toPromise();
-    this.logger.log('Product res: ', JSON.stringify(res.data.data));
-
+    //store json and jpg
     const fileName = this.urlToProductId(url);
-    await this.store(['detail'], fileName, Buffer.from(JSON.stringify(res.data), 'utf-8'), '.json');
     const imageUrls: string[] = res.data.data.product.picURLs;
-    await Promise.all(imageUrls.map(async imageUrl => {
-      const image = await this.httpService.get(imageUrl).toPromise();
-      this.store(['detail'], fileName, Buffer.from(image.data, 'binary'), this.fileService.getFileExtension(imageUrl));
-    }));
+    this.store(['detail'], fileName, Buffer.from(JSON.stringify(res.data), 'utf-8'), '.json');
+    imageUrls.map(async (imageUrl, index) => {
+      return this.storeAsStream(['detail'], fileName + index, imageUrl);
+    });
+
 
     //extract (and save to database)
     const product = new Getir();
     product.productNo = res.data.data.product.id;
     product.name = res.data.data.product.name;
+    product.imageUrls = imageUrls;
     this.getirRepository.save(product);
 
     return GetirMapper.fromEntityToDTO(product);
@@ -74,6 +74,16 @@ export class GetirService {
   private async store(directories: string[], fileName: string, content: Buffer, extension: string): Promise<string> {
     const url = await this.fileService.store([RETAILER, ...directories], fileName, extension, content);
     return url;
+  }
+
+  private async storeAsStream(directories: string[], fileName: string, url: string): Promise<string> {
+    const response = await this.httpService.axiosRef({
+      url,
+      method: 'GET',
+      responseType: 'stream',
+    });
+
+    return this.fileService.storeAsStream([RETAILER, ...directories], fileName, '.jpg', response);
   }
 
 
