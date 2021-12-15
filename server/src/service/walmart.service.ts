@@ -108,7 +108,7 @@ export class WalmartService {
 
   async store(content: Buffer, extension: string): Promise<string> {
     const id = uuid();
-    const url = await this.fileService.store(RETAILER, id, extension, content);
+    const url = await this.fileService.store([RETAILER], id, extension, content);
     return id;
   }
 

@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './module/auth.module';
 import { ormConfig } from './orm.config';
 import { WalmartModule } from './module/walmart.module';
+import { GetirModule } from './module/getir.module';
 import { FileModule } from './module/file.module';
 
 // jhipster-needle-add-entity-module-to-main-import - JHipster will import entity modules here, do not remove
@@ -15,6 +16,7 @@ import { FileModule } from './module/file.module';
         AuthModule,
         FileModule,
         WalmartModule,
+        GetirModule,
         
         // jhipster-needle-add-entity-module-to-main - JHipster will add entity modules here, do not remove
     ],
