@@ -2,6 +2,18 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 import { BaseDTO } from './base.dto';
 
+export class GetirGetOneDTO {
+    @ApiModelProperty({ description: 'url field', required: true })
+    url: string;
+}
+
+export class GetirSearchDTO {
+    @ApiModelProperty({ description: 'url field', required: true })
+    url: string;
+
+    @ApiModelProperty({ description: 'search term field', required: false })
+    term: string;
+}
 
 /**
  * A GetirDTO object.
@@ -21,5 +33,4 @@ export class GetirDTO extends BaseDTO {
 
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
-
 }
