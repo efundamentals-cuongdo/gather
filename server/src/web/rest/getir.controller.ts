@@ -10,9 +10,9 @@ import { LoggingInterceptor } from '../../client/interceptors/logging.intercepto
 
 
 @Controller('api/getirs')
-@UseGuards(AuthGuard, RolesGuard)
+// @UseGuards(AuthGuard, RolesGuard)
 @UseInterceptors(LoggingInterceptor, ClassSerializerInterceptor)
-@ApiBearerAuth()
+// @ApiBearerAuth()
 @ApiUseTags('getirs')
 export class GetirController {
   logger = new Logger('GetirController');
@@ -20,7 +20,7 @@ export class GetirController {
   constructor(private readonly getirService: GetirService) { }
 
   @PostMethod('/detail')
-  @Roles(RoleType.USER)
+  // @Roles(RoleType.USER)
   @ApiResponse({
     status: 200,
     description: 'Gather 1 product by url',
