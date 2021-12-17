@@ -38,7 +38,7 @@ export class GorillasController {
     description: 'Gather products from searching',
     type: GorillasDTO,
   })
-  async search(@Body() gorillasDTO: GorillasSearchDTO): Promise<GorillasDTO[]> {
+  async search(@Body() gorillasDTO: GorillasSearchDTO): Promise<string> {
     return await this.gorillasService.search(gorillasDTO.url, gorillasDTO.term);
   }
 }

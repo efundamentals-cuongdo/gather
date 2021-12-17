@@ -65,7 +65,7 @@ export class GorillasService extends BaseService {
     return entity;
   }
 
-  async search(url: string, q: string): Promise<GorillasDTO[]> {
+  async search(url: string, q: string): Promise<string> {
     const headers = {
       "Authorization": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhcHBsaWNhdGlvbiIsImlzcyI6ImdvcmlsbGFzLW1vbm9saXRoIiwidWlkIjoiUG5XWFY0OTVRSHk3UEJwdzNhcTQ4USIsInVzZXJJZCI6IjYxYjc1NzgxMjg2NzEzNjkxODBjNzNiMSIsInJvbGVzIjpbIlVTRVIiXSwiYXBpVHlwZSI6IkFQUCIsInRhZ3MiOlsiTUFSS0VUX0FQUF9VU0VSIl0sImlhdCI6MTYzOTY5NTIyMywidGVuYW50IjoiWnpSbUJnazNTSnFBRUZadzFQNWNkQSIsInZlcnNpb24iOjJ9.xls8Trb1ttgeCDMOb-5X8wmhmix4foP6r7YwO-Hc7UseA0rIOrE6vsYKuv1euwKe",
       "Content-Type": "application/json"
@@ -74,11 +74,11 @@ export class GorillasService extends BaseService {
     const body = { "locality": { "coordinates": { "lat": 49.4522465563542, "lon": 11.0631623802871 } }, "isLazy": false, "locale": "en", "version": "15.25", "os": "android", "appIdentifier": "6bf958c9467bd123", "appName": "getgoodys" };
     const res = await this.httpService.post(url, body, { headers }).toPromise();
     console.log(res.data)
-    await this.store(['search'], this.urlToProductId(`${url}?q=${q}`), Buffer.from(JSON.stringify(res.data)), '.json');
+    await this.store(['search'], 'abc.json', Buffer.from(JSON.stringify(res.data)), '.json');
 
-    const entities = res.data.data.products.map(this.productToEntity);
-    this.gorillasRepository.save(entities);
-    return entities.map(GorillasMapper.fromDTOtoEntity);
+    // const entities = res.data.data.products.map(this.productToEntity);
+    // this.gorillasRepository.save(entities);
+    return "success"//entities.map(GorillasMapper.fromDTOtoEntity);
   }
 
   async category(url: string): Promise<GorillasDTO[]> {
